@@ -43,8 +43,38 @@ class Database:
 		func(x)
 		
 	def printData(self, cp):
-		print()
-		
+		if cp == '':
+			print(self.record[self.currentNum - 1].r_name)
+			print(self.record[self.currentNum - 1].name)
+			print(self.record[self.currentNum - 1].zips)
+			print(self.record[self.currentNum - 1].add)
+			print(self.record[self.currentNum - 1].phoneno)
+			print(self.record[self.currentNum - 1].email)
+			print('@')
+		else:
+			if cp == '#':
+				print(self.record[len(self.record) - 1].r_name)
+				print(self.record[len(self.record) - 1].name)
+				print(self.record[len(self.record) - 1].zips)
+				print(self.record[len(self.record) - 1].add)
+				print(self.record[len(self.record) - 1].phoneno)
+				print(self.record[len(self.record) - 1].email)
+				print('@')	
+			else:
+				if self.currentNum <= int(cp):			
+					while self.currentNum != int(cp):
+						self.currentNum += 1
+				else:
+					while self.currentNum != int(cp):
+						self.currentNum -= 1
+				print(self.record[self.currentNum - 1].r_name)
+				print(self.record[self.currentNum - 1].name)
+				print(self.record[self.currentNum - 1].zips)
+				print(self.record[self.currentNum - 1].add)
+				print(self.record[self.currentNum - 1].phoneno)
+				print(self.record[self.currentNum - 1].email)
+				print('@')	
+
 	def deleteData(self):
 		print()
 		
