@@ -5,11 +5,17 @@ import Database as data
 
 #空白までの文字列を削除
 def getArg(string):
+<<<<<<< HEAD
 	if len(string) > 1:
 		while not(string.startswith(' ')):
 			string = string[1:]
 		string = string[1:]
 	else: string = ''
+=======
+	while not(string.startswith(' ')):
+		string = string[1:]
+	string = string[1:]
+>>>>>>> develop
 	return string
 
 #ヘルプの表示
@@ -40,6 +46,10 @@ while True:
 		buf = getArg(buf)
 		db.printData(buf)
 	elif ini == 'D':
+<<<<<<< HEAD
+=======
+		buf = getArg(buf)
+>>>>>>> develop
 		db.deleteData()
 	elif ini == '+' or ini == 'N':
 		buf = getArg(buf)
