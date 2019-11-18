@@ -1,5 +1,6 @@
 import Record as re
 import re as matchs
+import os
 
 class Database:
 	def __init__(self,record = re.Record(),currentNum = -1,currentFileName = None):
@@ -44,12 +45,12 @@ class Database:
 		
 	def printData(self, cp):
 		if cp == '':
-			print(self.record[self.currentNum - 1].r_name)
-			print(self.record[self.currentNum - 1].name)
-			print(self.record[self.currentNum - 1].zips)
-			print(self.record[self.currentNum - 1].add)
-			print(self.record[self.currentNum - 1].phoneno)
-			print(self.record[self.currentNum - 1].email)
+			print(self.record[self.currentNum].r_name)
+			print(self.record[self.currentNum].name)
+			print(self.record[self.currentNum].zips)
+			print(self.record[self.currentNum].add)
+			print(self.record[self.currentNum].phoneno)
+			print(self.record[self.currentNum].email)
 			print('@')
 		else:
 			if cp == '#':
@@ -59,24 +60,46 @@ class Database:
 				print(self.record[len(self.record) - 1].add)
 				print(self.record[len(self.record) - 1].phoneno)
 				print(self.record[len(self.record) - 1].email)
-				print('@')	
-			else:
-				if self.currentNum <= int(cp):			
-					while self.currentNum != int(cp):
-						self.currentNum += 1
+				print('@')
+			elif cp == '+':
+				if self.currentNum >= len(self.record)-1:
+					print('error : can not go ahead')
 				else:
-					while self.currentNum != int(cp):
-						self.currentNum -= 1
-				print(self.record[self.currentNum - 1].r_name)
-				print(self.record[self.currentNum - 1].name)
-				print(self.record[self.currentNum - 1].zips)
-				print(self.record[self.currentNum - 1].add)
-				print(self.record[self.currentNum - 1].phoneno)
-				print(self.record[self.currentNum - 1].email)
-				print('@')	
+					self.currentNum += 1
+					print(self.record[self.currentNum].r_name)
+					print(self.record[self.currentNum].name)
+					print(self.record[self.currentNum].zips)
+					print(self.record[self.currentNum].add)
+					print(self.record[self.currentNum].phoneno)
+					print(self.record[self.currentNum].email)
+					print('@')
+			elif cp == '-':
+				if self.currentNum <= 0:
+					print('error : can not go back')
+				else:
+					self.currentNum -= 1
+					print(self.record[self.currentNum].r_name)
+					print(self.record[self.currentNum].name)
+					print(self.record[self.currentNum].zips)
+					print(self.record[self.currentNum].add)
+					print(self.record[self.currentNum].phoneno)
+					print(self.record[self.currentNum].email)
+					print('@')
+			else:
+				while self.currentNum + 1 < int(cp):
+					self.currentNum += 1
+				while self.currentNum + 1 > int(cp):
+					self.currentNum -= 1
+				print(self.record[self.currentNum].r_name)
+				print(self.record[self.currentNum].name)
+				print(self.record[self.currentNum].zips)
+				print(self.record[self.currentNum].add)
+				print(self.record[self.currentNum].phoneno)
+				print(self.record[self.currentNum].email)
+				print('@')		
 
 	def deleteData(self):
-		print()
+		self.record.pop(self.currentNum)
 		
 		
 	def saveDataBase(self, cp):
@@ -85,15 +108,15 @@ class Database:
 			print('レコードの数',len(self.record))
 			
 			if cp == '':
-				if currentFileName == None:
+				if self.currentFileName == None:
 					print('ファイル名を入力してください\n')
-					currentFileName = input('>> ')
-				f = open(currentFileName,'w')
+					self.currentFileName = input('>> ')
+				f = open(self.currentFileName,'w')
 			else:
-				currentFileName = cp
+				self.currentFileName = cp
 				f = open(cp,'w')
 				
-			que = input('keyを入力しますか？>>> y/n')
+			que = input('keyを入力しますか？ y/n >>')
 			if que == 'y':
 				key = input('>> ')
 				for i in range(len(self.record)):
@@ -133,7 +156,29 @@ class Database:
 		
 		
 	def loadDataBase(self, cp):
-		return 0
+		path = cp
+		loaddata = ["a"]
+		if os.path.isfile(path):
+			with open(path) as f:
+				loaddata = [s.strip() for s in f.readlines()]
+
+		def split_list(l, n):
+			for idx in range(0, len(l), n):
+				yield l[idx:idx + n]
+	
+		result = list(split_list(loaddata, 7))
+
+		temp_record = [re.Record(result[0][0], result[0][1], result[0][2], result[0][3], result[0][4], result[0][5])]
+
+		for i in range(len(result)):
+			if i != 0:
+				record = re.Record(result[i][0], result[i][1], result[i][2], result[i][3], result[i][4], result[i][5])
+				temp_record.append(record)
+			
+		self.record = temp_record
+		self.currentNum = len(self.record)
+		self.currentFileName = path	
+		
 		
 	def findData(self, cp):
 		print()
